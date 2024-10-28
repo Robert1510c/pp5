@@ -8,6 +8,15 @@
     <link rel="stylesheet" href="assets/style/style.css">
 </head>
 <body>
+  <div id="customer-list">
+    <ul> Lista klientow
+      <li id="customer-list-data">Jan Nowak</li>
+    </ul>
+    <button type="button" onclick="showForm()" class="btn btn-primary">Show form</button>
+  </div>
+
+  <div id="customer-form" style="display: none" >
+
     <form class="row g-3 " id="form">
         <div class="col-md-8">
           <label for="inputcn" class="form-label">Company name</label>
@@ -63,16 +72,44 @@
 
         <div class="col-12">
             <button type="button" class="btn btn-secondary" id="fillForm" onclick="fillData()">Fill form</button>
-          </div>
+        </div>
+        
+        <!-- <div>
+          <ul>
+            <li class="list-group-item">lista</li>
+          </ul>
+        </div> -->
+      </div>
       </form>
 
       <script>
         
+        function showForm(){
+          document.getElementById('customer-list').style.display = "none";
+          document.getElementById('customer-form').style.display = "block";
+        }
+
+        function showList(){
+          document.getElementById('customer-list').style.display = "block";
+          document.getElementById('customer-form').style.display = "none";
+
+          let ul = document.getElementById('customer-list-data');
+          ul.innerHTML="";
+          for(let customer of customersList){
+            ul.innerHTML = `<li>${'companyName'} <button class="btn btn-primary onlclick=showCustomer(${customer.id})">Edytuj</button></li>`
+          }
+        
+        }
+        var customersList=[];
+
+
 
         function sumbitData(event) {
             event.preventDefault();
 
+
             const formData = {
+                id: Math.random()*1000,
                 companyName: document.getElementById("inputcn").value,
                 nip: document.getElementById("inputnip").value,
                 city: document.getElementById("inputcity").value,
@@ -85,7 +122,14 @@
                 isActive: document.getElementById("exampleCheck1").checked
             };
             console.log(formData);
+            customersList.push(formData);
+            showList();
+            console.log(customersList);
+
+            customersList.forEach
+
         };
+
         function fillData() {
             document.getElementById("inputcn").value = "Test";
             document.getElementById("inputnip").value = "45672165";
@@ -100,6 +144,18 @@
 
             disableFormFields();
         };
+
+        function getEmptyCustomer(){
+          return {
+
+          }
+        }
+
+        function showCustomer(id){
+          showForm();
+          let customer = customersList.find((customer)=> );
+          fillData()
+        }
 
         function disableFormFields() {
             const inputs = form.querySelectorAll('input, select');
