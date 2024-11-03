@@ -17,7 +17,7 @@
 
   <div id="customer-form" style="display: none" >
 
-    <form class="row g-3 " id="form">
+    <form class="row g-3 " id="form" onsubmit="sumbitData(event)">
         <div class="col-md-8">
           <label for="inputcn" class="form-label">Company name</label>
           <input type="text" class="form-control" id="inputcn" required>
@@ -67,7 +67,7 @@
         </div>
 
         <div class="col-12">
-          <button class="btn btn-primary" type="submit" onclick="sumbitData(event)">Submit form</button>
+          <button class="btn btn-primary" type="submit">Submit form</button>
         </div>
 
         <div class="col-12">
@@ -83,10 +83,19 @@
       </form>
 
       <script>
-        
+        var editingCustomerId=null;
+        var customersList=[];
+
         function showForm(){
           document.getElementById('customer-list').style.display = "none";
           document.getElementById('customer-form').style.display = "block";
+          if (editingCustomerId !== null) {
+              enableFormFields();
+          } else {
+              document.getElementById('form').reset();
+              editingCustomerId = null;
+          }
+          
         }
 
         function showList(){
@@ -94,13 +103,13 @@
           document.getElementById('customer-form').style.display = "none";
 
           let ul = document.getElementById('customer-list-data');
-          ul.innerHTML="";
-          for(let customer of customersList){
-            ul.innerHTML = `<li>${'companyName'} <button class="btn btn-primary onlclick=showCustomer(${customer.id})">Edytuj</button></li>`
-          }
+          ul.innerHTML="Client list";
+          customersList.forEach(customer=>{
+            ul.innerHTML += `<li>${customer.id} - ${customer.companyName} <button class="btn btn-primary" onclick="showCustomer(${customer.id})">Edytuj</button></li>`
+          });
         
         }
-        var customersList=[];
+        
 
 
 
@@ -109,7 +118,7 @@
 
 
             const formData = {
-                id: Math.random()*1000,
+              id: editingCustomerId !== null ? editingCustomerId : Math.floor(Math.random() * 10000),
                 companyName: document.getElementById("inputcn").value,
                 nip: document.getElementById("inputnip").value,
                 city: document.getElementById("inputcity").value,
@@ -121,12 +130,17 @@
                 branch: document.getElementById("inputbranch").value,
                 isActive: document.getElementById("exampleCheck1").checked
             };
-            console.log(formData);
-            customersList.push(formData);
+            if (editingCustomerId !== null) {
+              const index = customersList.findIndex(customer => customer.id === editingCustomerId);
+              if (index !== -1) {
+                customersList[index] = formData;
+              }
+            } else {
+              customersList.push(formData);
+            }
+            editingCustomerId = null; 
             showList();
-            console.log(customersList);
 
-            customersList.forEach
 
         };
 
@@ -142,28 +156,68 @@
             document.getElementById("inputbranch").value = "2";
             document.getElementById("exampleCheck1").checked = true;
 
-            disableFormFields();
+            document.getElementById('inputcn').disabled = true;
+            document.getElementById('inputnip').disabled = true;
+            document.getElementById('inputcity').disabled = true;
+            document.getElementById('inputstreet').disabled = true;
+            document.getElementById('inputhousenr').disabled = true;
+            document.getElementById('inputapnr').disabled = true;
+            document.getElementById('inputzip').disabled = true;
+            document.getElementById('inputcomments').disabled = true;
+            document.getElementById('inputbranch').disabled = true;
+            document.getElementById('exampleCheck1').disabled = true;
         };
 
-        function getEmptyCustomer(){
-          return {
 
-          }
+        // function getEmptyCustomer(){
+        //   return {
+            
+
+        //   }
+        // }
+        function enableFormFields() {
+          const fieldIds = [
+            "inputcn",
+            "inputnip",
+            "inputcity",
+            "inputstreet",
+            "inputhousenr",
+            "inputapnr",
+            "inputzip",
+            "inputcomments",
+            "inputbranch",
+            "exampleCheck1"
+          ];
+
+          fieldIds.forEach(id => {
+            document.getElementById(id).disabled = false;
+          });
         }
 
         function showCustomer(id){
-          showForm();
-          let customer = customersList.find((customer)=> );
-          fillData()
-        }
+          
+          let customer = customersList.find((customer)=> customer.id===id);
+          console.log(customer)
 
-        function disableFormFields() {
-            const inputs = form.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                input.disabled = true;
-            });
+          if (customer){
+            editingCustomerId = id;
+            enableFormFields();
 
+            document.getElementById('inputcn').value = customer.companyName;
+            document.getElementById('inputnip').value = customer.nip;
+            document.getElementById('inputcity').value = customer.city;
+            document.getElementById('inputstreet').value = customer.street;
+            document.getElementById('inputhousenr').value = customer.houseNumber;
+            document.getElementById('inputapnr').value = customer.apartmentNumber;
+            document.getElementById('inputzip').value = customer.zipCode;
+            document.getElementById('inputcomments').value = customer.comments;
+            document.getElementById('inputbranch').value = customer.branch;
+            document.getElementById('exampleCheck1').checked = customer.isActive;     
+            
+            showForm();
         }
+      }
+
 
 
     </script>
