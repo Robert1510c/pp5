@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Customer } from '../../models/Customer';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Customer } from '../../models/customer';
 
 @Component({
   selector: 'app-customer-list-element',
@@ -8,7 +8,18 @@ import { Customer } from '../../models/Customer';
   styleUrl: './customer-list-element.component.scss'
 })
 export class CustomerListElementComponent {
+
+
+
+
   @Input()
   customer : Customer = new Customer();
 
+  @Output()
+  deleteCustomerEvent = new EventEmitter<Customer>();
+
+  deleteCustomer(){
+    console.log("kasuje klienta", this.customer.inputnip)
+    this.deleteCustomerEvent.emit(this.customer);
+  }
 }
