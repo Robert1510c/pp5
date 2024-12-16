@@ -23,6 +23,7 @@ export class CustomerService {
     this.customersList = this.customersList.filter((x: Customer) =>{
       return x.inputnip !== x.inputnip
     }
-    )}
+    )
+  return this.customersList}
   
 }

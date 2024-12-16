@@ -1,6 +1,6 @@
     test
     {{customer|json}}
-    <form class="row g-3 " id="form" (ngSubmit)="handleSubmit()">
+    <form #f='ngForm' class="row g-3 " id="form" (ngSubmit)="handleSubmit()">
       <div class="text-size-3">Formularz</div>
         <div class="col-md-8">
           <label for="inputcn" class="form-label">Company name</label>

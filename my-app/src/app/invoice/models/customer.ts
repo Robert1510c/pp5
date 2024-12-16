@@ -10,11 +10,11 @@ export class Customer{
     inputbranch: string = "";
     exampleCheck1: boolean = true;
 
-    getData(){
+    getData():string{
         return `${this.inputcn} ${this.inputnip}`;
       }
     
-    getAdress(){
+    getAdress():string{
         return `${this.inputcity} ${this.inputstreet} ${this.inputhousenr}`
     }
   }

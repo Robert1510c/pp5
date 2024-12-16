@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Customer } from '../models/customer';
 import { CustomerService } from '../services/customer-service';
 import { Router } from '@angular/router';
@@ -18,18 +18,19 @@ export class CustomerListComponent implements OnInit, OnDestroy{
   ) {
     console.log(this.customerService.getCustomers());
   }
-  ngOnInit(): void {
+  ngOnInit() {
     throw new Error('Method not implemented.');
   }
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.customerList = this.customerService.getCustomers();
   }
 
   redirectToForm(){
     this.router.navigate(['/invoice/customer-form'])
   }
-  deleteCustomerParent(customer:Customer){
-    console.log('rodzic ma usunac:', customer)
+  deleteCustomerParent(customer : Customer){
+    console.log(this.customerList);
     this.customerList = this.customerService.removeCustomer(customer);
+    console.log(this.customerList)
   }
 }
